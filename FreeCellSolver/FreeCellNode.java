@@ -288,6 +288,21 @@ public class FreeCellNode extends SearchNode {
 			return moveMade;
 	}
 	
+	public CardNode[] getCascades() {
+		return cascades;
+	}
+
+
+	public CardNode[] getCells() {
+		return cells;
+	}
+
+
+	public CardNode[] getFoundations() {
+		return foundations;
+	}
+	
+	
 	/*public static void main(String[] args){
 		FreeCellNode startNode = new FreeCellNode(9998);
 		//FreeCellNode startNode = new FreeCellNode(11987 );
