@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -7,6 +8,7 @@ public class FreeCellNode extends SearchNode {
 	private CardNode[] cells;
 	private CardNode[] foundations;
 	public String moveMade;
+	private int hash;
 	
 	final static int NUM_CASCADES = 8;//array sizes
 	final static int NUM_CELLS = 4;
@@ -222,8 +224,48 @@ public class FreeCellNode extends SearchNode {
 		return newNode;
 	}
 	
-	public FreeCellNode clone(){
+	public int getHash(){
+		if(hash != 0){
+			return hash;
+		}
 		
+		ArrayList<CardNode> sortedCascs = new ArrayList<CardNode>();
+		ArrayList<CardNode> sortedCells = new ArrayList<CardNode>();
+		
+		for(CardNode cardNode : cells){
+			if(cardNode != null){
+			  sortedCells.add(cardNode);
+			}
+		}
+		
+		
+		sortedCells.sort(CARD_ID_ORDER);
+		
+		for(CardNode cardNode : cascades){
+			if(cardNode != null){
+				sortedCascs.add(cardNode);
+			}
+		}
+		
+		sortedCells.sort(CARD_ID_ORDER);
+		
+		for(CardNode topNode : sortedCascs){
+			CardNode node = topNode;
+			while(node != null){
+				hash = (hash + topNode.getCard().getId()) * 53;
+				node = node.getPrevious();
+			}
+		}
+		
+		for(CardNode cardNode : sortedCells){
+			hash = (hash + cardNode.getCard().getId()) * 53;
+		}
+		
+		return hash;
+		
+	}
+	
+	public FreeCellNode clone(){
 		FreeCellNode newNode = (FreeCellNode) super.clone();
 		newNode.cascades = cascades.clone();
 		newNode.cells = cells.clone();
@@ -303,10 +345,21 @@ public class FreeCellNode extends SearchNode {
 		return foundations;
 	}
 	
+	static final Comparator<CardNode> CARD_ID_ORDER = new Comparator<CardNode>(){
+		public int compare(CardNode node1, CardNode node2){
+			return ((Integer) node1.getCard().getId()).compareTo(node2.getCard().getId());
+		}
+		
+	};
+	
 	
 	/*public static void main(String[] args){
 		FreeCellNode startNode = new FreeCellNode(9998);
-		//FreeCellNode startNode = new FreeCellNode(11987 );
+		System.out.println(startNode.getHash());
+		startNode = new FreeCellNode(11987 );
+		System.out.println(startNode.getHash());
+	
+		
 		System.out.println(startNode.toString());
 		startNode.autoMove();
 		System.out.println(startNode.toString());

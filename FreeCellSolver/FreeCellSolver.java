@@ -1,3 +1,4 @@
+import java.util.Comparator;
 
 public class FreeCellSolver {
 	
@@ -82,5 +83,6 @@ public class FreeCellSolver {
 		
 		return score;
 	}
+	
 
 }
