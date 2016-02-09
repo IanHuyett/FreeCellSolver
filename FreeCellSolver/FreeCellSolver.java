@@ -40,7 +40,7 @@ public class FreeCellSolver {
 			}
 		}
 		
-		//score += emptyTotal * EMPTY_MULT;
+		score += emptyTotal * EMPTY_MULT;
 		
 		int reachableCards = 0;
 		int[] nextRank = new int[4];
