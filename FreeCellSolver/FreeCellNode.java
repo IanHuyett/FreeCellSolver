@@ -176,11 +176,12 @@ public class FreeCellNode extends SearchNode {
 				toMoveNode = toMoveNode.getPrevious();
 				toMove = toMoveNode.getCard();
 			}
+			boolean movedToEmpty = false;
 			for(int dest = 0; dest < NUM_CASCADES; dest++){//to cascades
 				if(dest == origin){
 					continue;
 				}
-				else if(cascades[dest] == null || (toMove.rank == cascades[dest].getCard().rank - 1 && toMove.isRed() != cascades[dest].getCard().isRed())){
+				else if((cascades[dest] == null && !movedToEmpty) || (toMove.rank == cascades[dest].getCard().rank - 1 && toMove.isRed() != cascades[dest].getCard().isRed())){
 					children.add(createAndMove(CASCADE, origin, CASCADE, dest));
 				}
 			}
