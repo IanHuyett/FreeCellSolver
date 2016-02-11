@@ -44,7 +44,7 @@ public class FreeCellNodeTest {
 	    // To ensure the ArrayList isn't garbage-collected:
 	    System.out.println("Number of nodes generated: " + nodes.size());*/
 		
-		Searcher searcher = new RecursiveDepthLimitedSearcher(100);
+		Searcher searcher = new RecursiveDepthLimitedSearcher(1000);
 		boolean found = searcher.search(new FreeCellNode(random.nextInt(1000000) + 1));
 		System.out.println(found);
 	}
