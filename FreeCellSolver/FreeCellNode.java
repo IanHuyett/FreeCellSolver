@@ -198,7 +198,7 @@ public class FreeCellNode extends SearchNode {
 			}
 
 			if(foundations[toMove.suit] != null && foundations[toMove.suit].getCard().rank == toMove.rank - 1){
-				createAndMove(CASCADE, origin, FOUNDATION, toMove.suit);
+				children.add(createAndMove(CASCADE, origin, FOUNDATION, toMove.suit));
 			}
 		}
 		
@@ -213,7 +213,7 @@ public class FreeCellNode extends SearchNode {
 				}
 			}
 			if(foundations[toMove.suit] != null && foundations[toMove.suit].getCard().rank == toMove.rank - 1){
-				createAndMove(CELL, origin, FOUNDATION, toMove.suit);
+				children.add(createAndMove(CELL, origin, FOUNDATION, toMove.suit));
 			}
 		}
 //		System.out.println(children);
@@ -264,6 +264,11 @@ public class FreeCellNode extends SearchNode {
 			hash = (hash + cardNode.getCard().getId()) * 53;
 		}
 		
+		for(CardNode cardNode : foundations){
+			if(cardNode != null)
+				hash = (hash + cardNode.getCard().getId()) *53;
+		}
+		
 		return hash;
 		
 	}
@@ -276,6 +281,7 @@ public class FreeCellNode extends SearchNode {
 		newNode.moveMade = "";
 		newNode.parent = this;
 		newNode.depth = depth+1;
+		newNode.hash = 0;
 		return newNode;
 	}
 	

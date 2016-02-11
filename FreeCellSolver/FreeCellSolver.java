@@ -2,14 +2,18 @@ import java.util.Comparator;
 
 public class FreeCellSolver {
 	
-	private static final int HOME_MULT = 10;
-	private static final int EMPTY_MULT = 2;
-	private static final int REACHABLE_MULT = 5;
+	private static final int HOME_MULT = 15;
+	private static final int EMPTY_MULT = 8;
+	private static final int REACHABLE_MULT = 2;
+	private static final int MIN_DEPTH_MULT = -5;
+	private static final int TOTAL_DEPTH_MULT = -5;
 
 	public static void main(String[] args) {
-		FreeCellNode node = new FreeCellNode(9998);
-		System.out.println(node.toString());
-		System.out.println(scoreNode(node));
+		FreeCellNode node = new FreeCellNode(9997);
+		System.out.println(node.getHash());
+		for(SearchNode child : node.expand()){
+			System.out.println(((FreeCellNode)child).getHash());
+		}
 		
 
 	}
@@ -43,6 +47,9 @@ public class FreeCellSolver {
 		
 		score += emptyTotal * EMPTY_MULT;
 		
+		int minDepth = 19;
+		int totalDepth = 0;
+		
 		int reachableCards = 0;
 		int[] nextRank = new int[4];
 		for(int suit = 0; suit < Card.NUM_SUITS; suit++){
@@ -56,7 +63,10 @@ public class FreeCellSolver {
 		
 		for(int cell = 0; cell < FreeCellNode.NUM_CELLS; cell ++){
 			if(node.getCells()[cell] != null){
-				if(node.getCells()[cell].getCard().getRank() == nextRank[node.getCells()[cell].getCard().getSuit()]);
+				if(node.getCells()[cell].getCard().getRank() == nextRank[node.getCells()[cell].getCard().getSuit()]){
+					minDepth = 0;
+					reachableCards++;
+				};
 			}
 		}
 		
@@ -65,20 +75,24 @@ public class FreeCellSolver {
 				continue;
 			
 			CardNode cardNode = node.getCascades()[casc];
-			
-			for(int depth = 0; depth <= emptyTotal; depth++){
-				if(cardNode.getCard().getRank() == nextRank[cardNode.getCard().getSuit()])
-					reachableCards++;
-				
-				if(cardNode.getPrevious() == null)
-					break;
-				else
-					cardNode = cardNode.getPrevious();
+			int depth = 0;
+			while(cardNode.getPrevious() != null){
+				if(cardNode.getCard().getRank() == nextRank[cardNode.getCard().getSuit()]){
+					if(depth <= emptyTotal){
+						reachableCards++;
+					}
+					if(depth < minDepth)
+						minDepth = depth;
+					totalDepth += depth;
+				}
+				depth++;
+				cardNode = cardNode.getPrevious();
 			}
 		}
 		
 		score += reachableCards * REACHABLE_MULT;
-		
+		score += totalDepth * TOTAL_DEPTH_MULT;
+		score += totalDepth * MIN_DEPTH_MULT;
 		
 		
 		return score;
