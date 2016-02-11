@@ -5,7 +5,7 @@ public class FreeCellNodeTest {
 
 	public static void main(String[] args) {
 		Random random = new Random();
-		int maxNodes = 1000000;
+		/*int maxNodes = 1000000;
 		ArrayList<SearchNode> nodes = new ArrayList<SearchNode>();
 		long startMillis = System.currentTimeMillis();
 
@@ -42,7 +42,11 @@ public class FreeCellNodeTest {
 	    System.out.println("Used memory in bytes: " + memory);
 	    
 	    // To ensure the ArrayList isn't garbage-collected:
-	    System.out.println("Number of nodes generated: " + nodes.size());
+	    System.out.println("Number of nodes generated: " + nodes.size());*/
+		
+		Searcher searcher = new RecursiveDepthLimitedSearcher(100);
+		boolean found = searcher.search(new FreeCellNode(random.nextInt(1000000) + 1));
+		System.out.println(found);
 	}
 
 }
