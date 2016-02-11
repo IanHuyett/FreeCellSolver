@@ -157,6 +157,9 @@ public class FreeCellNode extends SearchNode {
 	@Override
 	public boolean isGoal() {
 		for(int i = 0; i < NUM_FOUNDATIONS; i++){
+			if(foundations[i] == null){
+				return false;
+			}
 			if(foundations[i].getCard().getRank() != 12){
 				return false;
 			}

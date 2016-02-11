@@ -12,35 +12,21 @@ public class FreeCellNodeTest {
 		SearchNode node = null;
 		int gameNodeCount = 0;
 		int gameNodeCountLimit = 50;
-		SearchNode max = null;
 		while (nodes.size() < maxNodes) {
 			if (gameNodeCount == gameNodeCountLimit) {
 				gameNodeCount = 0;
 				node = null;
 			}
-			if (node == null){
+			if (node == null)
 				node = new FreeCellNode(random.nextInt(1000000) + 1);
-				max = node;
-			}
-			if(node.isGoal()){
-				System.out.println(node);
-				break;
-			}
 			nodes.add(node);
 			gameNodeCount++;
 			ArrayList<SearchNode> children = node.expand();
 			if (children.isEmpty()) {
 				node = null;
 				gameNodeCount = 0;
-			}else{
-				for (SearchNode child : children){
-					int score = FreeCellSolver.scoreNode((FreeCellNode) child);
-					if(score > FreeCellSolver.scoreNode((FreeCellNode) max)){
-						max = child;
-					}
-				}
-				node = max;
 			}
+			node = children.isEmpty() ? null : children.get(random.nextInt(children.size()));
 		}
 		
 		long endMillis = System.currentTimeMillis();
