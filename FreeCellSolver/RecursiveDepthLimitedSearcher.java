@@ -17,6 +17,9 @@ public class RecursiveDepthLimitedSearcher extends Searcher {
 	
 	private boolean search(SearchNode node, int depthLimit){
 		if(System.currentTimeMillis() - timer >= 60000){
+			if(FreeCellSolver.scoreNode((FreeCellNode) node) > score){
+				System.out.println("Depth " + depthLimit + " node: " + node);
+			}
 			System.out.println("Time reached.");
 			return false;
 		}
