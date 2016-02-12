@@ -1,12 +1,13 @@
 import java.util.Comparator;
 
-public class FreeCellSolver {
+public class FreeCellScorer {
 	
-	private static final int HOME_MULT = 15;
-	private static final int EMPTY_MULT = 8;
-	private static final int REACHABLE_MULT = 2;
-	private static final int MIN_DEPTH_MULT = -5;
+	private static final int HOME_MULT = 40;
+	private static final int EMPTY_MULT = 10;
+	private static final int REACHABLE_MULT = 8;
+	private static final int MIN_DEPTH_MULT = -10;
 	private static final int TOTAL_DEPTH_MULT = -5;
+	private static final int NO_EMPTY_PENALTY = -10;
 
 	public static void main(String[] args) {
 		FreeCellNode node = new FreeCellNode(9997);
@@ -45,7 +46,9 @@ public class FreeCellSolver {
 			}
 		}
 		
-		score += emptyTotal * EMPTY_MULT;
+		score += (emptyTotal)* EMPTY_MULT;
+		if(emptyTotal == 0)
+			score += NO_EMPTY_PENALTY;
 		
 		int minDepth = 19;
 		int totalDepth = 0;

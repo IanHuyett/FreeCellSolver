@@ -93,6 +93,8 @@ public class FreeCellNode extends SearchNode {
 		else
 			moveMade += "h ";
 		
+		
+		
 		//make move
 		CardNode[] originArea = getArea(originAreaID);
 		CardNode[] destArea = getArea(destAreaID);
@@ -106,12 +108,14 @@ public class FreeCellNode extends SearchNode {
 			if(cascades[i] != null &&checkAutoMove(cascades[i].getCard())){
 				moveCard(CASCADE, i, FOUNDATION, cascades[i].getCard().suit);
 				autoMove();
+				return;
 			}
 		}
 		for(int i = 0; i < NUM_CELLS; i++){
 			if(cells[i] != null &&checkAutoMove(cells[i].getCard())){
 				moveCard(CELL, i, FOUNDATION, cells[i].getCard().suit);
 				autoMove();
+				return;
 			}
 		}
 		
@@ -176,11 +180,11 @@ public class FreeCellNode extends SearchNode {
 			
 			CardNode toMoveNode = cascades[origin];
 			Card toMove = toMoveNode.getCard();
-			int count = 0;
+			/*int count = 0;
 			if (canSupermove(toMoveNode) && count <= availableMoves()){
 				toMoveNode = toMoveNode.getPrevious();
 				toMove = toMoveNode.getCard();
-			}
+			}*/
 			boolean movedToEmpty = false;
 			for(int dest = 0; dest < NUM_CASCADES; dest++){//to cascades
 				if(dest == origin){
@@ -362,99 +366,5 @@ public class FreeCellNode extends SearchNode {
 	};
 	
 	
-	/*public static void main(String[] args){
-		FreeCellNode startNode = new FreeCellNode(9998);
-		System.out.println(startNode.getHash());
-		startNode = new FreeCellNode(11987 );
-		System.out.println(startNode.getHash());
 	
-		
-		System.out.println(startNode.toString());
-		startNode.autoMove();
-		System.out.println(startNode.toString());
-		//System.out.println(startNode.moveMade);
-		//manualTest(startNode);
-		
-		//System.out.println(startNode.getMoveHistory());
-		//FreeCellNode childNode = startNode.clone();
-		//childNode.moveCard(childNode.cascades, 0, childNode.cells, 1);
-		ArrayList<SearchNode> children = startNode.expand();
-		children.get(0).expand();
-		//System.out.println(childNode.toString());
-		//System.out.println(childNode.getMoveHistory());
-	}*/
-	
-	/*public static void manualTest(FreeCellNode startNode){
-		//allows entering of moves via terminal using standard notation
-		//does not check legality or handle out of bounds numbers/letters
-		Scanner in = new Scanner(System.in);
-		FreeCellNode currentNode = startNode;
-		CardNode[] originArea = currentNode.cells;
-		int originStack = 0;
-		CardNode[] destArea= currentNode.foundations;
-		int destStack = 0;
-		while(true){
-			System.out.printf("Depth: %d\n", currentNode.depth);
-			System.out.println("Move History: " + currentNode.getMoveHistory());
-			System.out.println(currentNode.toString());
-			System.out.println("Move: ");
-			String input = in.nextLine();
-			if(input.length() != 2){
-				System.out.println("invalid");
-				continue;
-			}
-			String origin = input.substring(0,1);
-			String dest = input.substring(1,2);
-			
-			
-			
-			FreeCellNode newNode = currentNode.clone();
-			currentNode = newNode;
-			
-			
-			if(Character.isDigit(origin.charAt(0))){
-				originArea = currentNode.cascades;
-				originStack = Integer.parseInt(origin) - 1;
-				
-			}
-			else{
-				originArea = currentNode.cells;
-				for(int i = 0; i < 4; i ++){
-					if(CELL_IDS[i].equals(origin));
-						originStack = i;
-				}
-			}
-			if(dest.equals("h")){
-				destArea = currentNode.foundations;
-				destStack = originArea[originStack].card.suit;
-			}
-			else if(Character.isDigit(dest.charAt(0))){
-				destArea = currentNode.cascades;
-				destStack = Integer.parseInt(dest) - 1;
-			}
-			else{
-				destArea = currentNode.cells;
-				for(int i = 0; i < 4; i ++){
-					if(CELL_IDS[i].equals(dest)){
-						destStack = i;
-					}
-				}
-					
-			}
-			if(originArea[originStack] == null){
-				System.out.println("invalid");
-				continue;
-			}
-			
-			
-
-			currentNode.moveCard(originArea, originStack, destArea, destStack);
-			if(currentNode.isGoal()){
-				System.out.println(currentNode.toString() + "\n\n Finished at depth " + currentNode.depth);
-			}
-			
-
-		}
-	}
-*/
 }

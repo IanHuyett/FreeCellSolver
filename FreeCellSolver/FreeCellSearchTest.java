@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class FreeCellNodeTest {
+public class FreeCellSearchTest {
 
 	public static void main(String[] args) {
 		Random random = new Random();
@@ -47,10 +47,12 @@ public class FreeCellNodeTest {
 		for(int i = 1; i<=100; i++){
 			System.out.println(i);
 			Searcher searcher = new RecursiveDepthLimitedSearcher(10);
-			boolean found = searcher.search(new FreeCellNode(100));
-			System.out.println(found);
+			boolean found = searcher.search(new FreeCellNode(i));
+			
 			if(found)
 				solved++;
+			
+			System.out.printf("%d out of %d\n", solved, i);
 		}
 		System.out.printf("Solved %d out of 100", solved);
 	}

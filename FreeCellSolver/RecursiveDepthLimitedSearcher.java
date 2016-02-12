@@ -23,9 +23,11 @@ public class RecursiveDepthLimitedSearcher extends Searcher {
 		bestNode = (FreeCellNode) node;
 		boolean goalFound = false;
 		while(System.currentTimeMillis() - timer <= 60000 && !goalFound){
-		    System.out.println(bestNode);
-			System.out.println(bestNode.depth);
-			System.out.println(bestScore);
+		 //   System.out.println(bestNode);
+			//System.out.println(bestNode.depth);
+			
+	
+			//System.out.println(bestScore);
 			
 			bestScore = 0;
 			previousHashes.add(bestNode.getHash());
@@ -55,7 +57,7 @@ public class RecursiveDepthLimitedSearcher extends Searcher {
 			for(SearchNode child : node.expand()){
 				if(!generationHashes.contains(((FreeCellNode)child).getHash())){
 					generationHashes.add(((FreeCellNode)child).getHash());
-					int score = FreeCellSolver.scoreNode((FreeCellNode) child);
+					int score = FreeCellScorer.scoreNode((FreeCellNode) child);
 					if(score > bestScore && !previousHashes.contains(((FreeCellNode) child).getHash())){
 						//generationHashes.add(node.getHash());
 						//System.out.println(generationHashes);
