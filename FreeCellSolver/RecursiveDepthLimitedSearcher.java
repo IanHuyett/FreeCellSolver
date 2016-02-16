@@ -18,6 +18,10 @@ public class RecursiveDepthLimitedSearcher extends Searcher {
 
 	@Override
 	public boolean search(SearchNode node) {
+		FreeCellNode[] previousBestNodes = new FreeCellNode[20];
+		int nextIndex = 0;
+		int previousStored = 0;
+		
 		previousHashes = new ArrayList<Integer>();
 		generationHashes = new ArrayList<Integer>();
 		bestNode = (FreeCellNode) node;
@@ -29,12 +33,34 @@ public class RecursiveDepthLimitedSearcher extends Searcher {
 	
 			//System.out.println(bestScore);
 			
+			previousBestNodes[nextIndex++] = bestNode;
+			if(previousStored < 20)
+				previousStored++;
+			if(nextIndex == 20)
+				nextIndex = 0;
+			
 			bestScore = 0;
 			previousHashes.add(bestNode.getHash());
 			generationHashes.clear();
 			goalFound = search(bestNode, depthLimit);
 			if(bestScore == 0){
-				return goalFound;
+				if(previousStored == 20){
+					bestNode = previousBestNodes[nextIndex];
+					previousStored = 0;
+				}
+				else if(previousStored == 0){
+				  	return false;
+				}
+				else if(previousStored == 1 && bestNode.getHash() == previousBestNodes[(nextIndex == 0)? 19 : nextIndex -1].getHash()){
+					return false;
+				}
+				else{
+					nextIndex = nextIndex - previousStored;
+					if(nextIndex < 0)
+						nextIndex += 20;
+					bestNode = previousBestNodes[nextIndex];
+					previousStored = 0;
+				}
 			}
 		}
 		return goalFound;
@@ -45,7 +71,6 @@ public class RecursiveDepthLimitedSearcher extends Searcher {
 			//if(FreeCellSolver.scoreNode((FreeCellNode) node) > score){
 			//	System.out.println("Depth " + depthLimit + " node: " + node);
 			//}
-			System.out.println("Time reached.");
 			return false;
 		}
 		nodeCount++;

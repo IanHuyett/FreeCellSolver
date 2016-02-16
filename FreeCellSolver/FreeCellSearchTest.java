@@ -44,17 +44,32 @@ public class FreeCellSearchTest {
 	    // To ensure the ArrayList isn't garbage-collected:
 	    System.out.println("Number of nodes generated: " + nodes.size());*/
 		int solved = 0;
+		
+		long totalTime = 0;
 		for(int i = 1; i<=100; i++){
-			System.out.println(i);
+			System.out.printf("\n%d: ",i);
+			long startMillis = System.currentTimeMillis();
+			
 			Searcher searcher = new RecursiveDepthLimitedSearcher(10);
 			boolean found = searcher.search(new FreeCellNode(i));
 			
-			if(found)
-				solved++;
+			long time = System.currentTimeMillis() - startMillis;
 			
-			System.out.printf("%d out of %d\n", solved, i);
+			
+			
+			if(found){
+				solved++;
+				System.out.print("found");
+			}
+			else{
+				time += 120000;
+				System.out.print("not found");
+			}
+			totalTime += time;
+			
+			System.out.printf(" %d\n%d out of %d", time, solved, i);
 		}
-		System.out.printf("Solved %d out of 100", solved);
+		System.out.printf("\nSolved %d out of 100\n Average time: %d", solved, totalTime/100);
 	}
 
 }
