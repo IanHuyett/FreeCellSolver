@@ -76,6 +76,7 @@ public class RecursiveDepthLimitedSearcher extends Searcher {
 		nodeCount++;
 		if(node.isGoal()){
 			goalNode = node;
+			System.out.println(((FreeCellNode) goalNode).moveMade);
 			return true;
 		}
 		if(depthLimit > 0){

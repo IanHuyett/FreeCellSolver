@@ -282,7 +282,7 @@ public class FreeCellNode extends SearchNode {
 		newNode.cascades = cascades.clone();
 		newNode.cells = cells.clone();
 		newNode.foundations = foundations.clone();
-		newNode.moveMade = "";
+		newNode.moveMade = moveMade;
 		newNode.parent = this;
 		newNode.depth = depth+1;
 		newNode.hash = 0;
