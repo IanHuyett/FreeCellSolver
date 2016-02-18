@@ -1,3 +1,5 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -5,6 +7,8 @@ public class FreeCellSearchTest {
 
 	public static void main(String[] args) {
 		Random random = new Random();
+		int maxSeed = 6;
+		
 		/*int maxNodes = 1000000;
 		ArrayList<SearchNode> nodes = new ArrayList<SearchNode>();
 		long startMillis = System.currentTimeMillis();
@@ -46,30 +50,45 @@ public class FreeCellSearchTest {
 		int solved = 0;
 		
 		long totalTime = 0;
-		for(int i = 1; i<=100; i++){
-			System.out.printf("\n%d: ",i);
-			long startMillis = System.currentTimeMillis();
+		
+		try {
+			PrintWriter writer = new PrintWriter("results.txt");			
 			
-			Searcher searcher = new RecursiveDepthLimitedSearcher(10);
-			boolean found = searcher.search(new FreeCellNode(i));
-			
-			long time = System.currentTimeMillis() - startMillis;
-			
-			
-			
-			if(found){
-				solved++;
-				System.out.print("found");
+					
+			for(int i = 1; i<=100; i++){
+				System.out.printf("\n%d: ",i);
+				long startMillis = System.currentTimeMillis();
+				
+				int seed = (int) Math.pow(10, random.nextInt(maxSeed));
+				writer.println("Seed: " + seed);
+				
+				Searcher searcher = new RecursiveDepthLimitedSearcher(10);
+				boolean found = searcher.search(new FreeCellNode(seed));
+				
+				long time = System.currentTimeMillis() - startMillis;
+				
+				if(found){
+					solved++;
+					System.out.print("found");
+					writer.println(((FreeCellNode) searcher.goalNode).moveMade);
+				}
+				else{
+					time += 120000;
+					System.out.print("not found");
+					writer.println("No solution found");
+				}
+				totalTime += time;
+
+				System.out.printf(" %d\n%d out of %d", time, solved, i);
 			}
-			else{
-				time += 120000;
-				System.out.print("not found");
-			}
-			totalTime += time;
+			System.out.printf("\nSolved %d out of 100\n Average time: %d", solved, totalTime/100);
 			
-			System.out.printf(" %d\n%d out of %d", time, solved, i);
+			writer.close();
+		
+		}catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		System.out.printf("\nSolved %d out of 100\n Average time: %d", solved, totalTime/100);
 	}
 
 }
